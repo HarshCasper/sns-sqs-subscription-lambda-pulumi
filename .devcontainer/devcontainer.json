@@ -1,0 +1,20 @@
+{
+    "name": "LocalStack x Pulumi",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "codespaces": {
+            "openFiles": [
+                "README.md"
+            ]
+        },
+        "settings": {
+            "terminal.integrated.profiles.linux": {
+                "bash": {
+                    "path": "/bin/bash"
+                }
+            }
+        }
+    }
+}
