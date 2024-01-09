@@ -34,13 +34,13 @@ localstack start -d
 You can use a local backend for Pulumi, which will store the state in a local file. Run the following command to configure the local backend:
 
 ```bash
-pulumilocal login --local
+pulumi login --local
 ```
 
 Configure the Pulumi stack `dev` using the following command:
 
 ```bash
-pulumilocal stack init dev
+pulumi stack init dev
 ```
 
 ### Install dependencies
@@ -70,15 +70,20 @@ pulumi up --yes
 After a successful deployment, you should see the following output:
 
 ```bash
-@ updating......................
- +  aws:lambda:Function event-echo-lambda created (18s) 
- +  aws:lambda:EventSourceMapping sqs-lambda-trigger creating (0s) 
- +  aws:lambda:EventSourceMapping sqs-lambda-trigger created (0.06s) 
- +  pulumi:pulumi:Stack sns-sqs-dev created (1s) 
+Updating (dev):
+     Type                              Name                    Status              
+ +   pulumi:pulumi:Stack               sns-sqs-dev             created (0.89s)     
+ +   ├─ aws:sns:Topic                  trigger-event-topic     created (1s)        
+ +   ├─ aws:sqs:Queue                  lambda-event-queue      created (26s)       
+ +   ├─ aws:sqs:Queue                  lambda-result-queue     created (25s)       
+ +   ├─ aws:lambda:Function            event-echo-lambda       created (29s)       
+ +   ├─ aws:sns:TopicSubscription      lambda-event-queue-sub  created (0.05s)     
+ +   └─ aws:lambda:EventSourceMapping  sqs-lambda-trigger      created (0.05s)     
+
 Resources:
     + 7 created
 
-Duration: 48s
+Duration: 57s
 ```
 
 ### Check the stack
