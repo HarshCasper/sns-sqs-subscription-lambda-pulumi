@@ -1,0 +1,55 @@
+name: Deploy on LocalStack via Pulumi
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install LocalStack
+        uses: LocalStack/setup-localstack@main
+        with:
+          image-tag: 'latest'
+          install-awslocal: 'true'
+          configuration: DEBUG=1
+
+      - name: Zip the Lambda
+        run: zip lambda.zip lambda.py 
+
+      - name: Install Pulumi CLI
+        uses: pulumi/setup-pulumi@v2
+
+      - name: Deploy using Pulumi
+        env:
+          PULUMI_CONFIG_PASSPHRASE: ""
+        run: |
+          pulumi login --local
+          pulumi stack init dev
+          pulumi up --yes
+
+      - name: Check the deployed resources
+        run: |
+          awslocal lambda list-functions
+          awslocal sns list-topics
+          awslocal sqs list-queues
+          awslocal sns publish \
+            --topic arn:aws:sns:us-east-1:000000000000:trigger-event-topic --message '{"event_type":"testing","event_payload":"hello world"}'
+          localstack logs
