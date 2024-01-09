@@ -1,6 +1,6 @@
-# Pulumi Sample to showcase SNS, SQS, and Lambda integration
+# LocalStack & Pulumi Sample to showcase SNS, SQS, and Lambda integration
 
-This example demonstrates the delivery from SNS to SQS queues through subscriptions, triggering Lambda functions via SQS event source mappings, and accessing LocalStack resources from within a Lambda function.
+This example demonstrates the delivery from SNS to SQS queues through subscriptions, triggering Lambda functions via SQS event source mappings, and accessing resources from within a Lambda function. The sample is deployed using **LocalStack** on your local machine and on a CI pipeline without accessing any real cloud resources.
 
 The basic pipeline is:
 
@@ -10,12 +10,14 @@ The basic pipeline is:
 - Lambda function interacts with SQS using the AWS SDK for Python (`boto3`), executed within the Lambda.
 - SQS queue message reception, activated by user input.
 
+![Architecture](./images/architecture.png)
+
 ## Prerequisites
 
-- LocalStack
-- Pulumi CLI
+- [LocalStack & `localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli)
+- [Pulumi (`pulumi`) CLI](https://www.pulumi.com/docs/install/)
 - Docker
-- `awslocal` CLI
+- AWS CLI & [`awslocal` wrapper script](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal)
 
 ## Instructions
 
